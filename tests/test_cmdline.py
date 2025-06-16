@@ -49,7 +49,6 @@ def test_sig_stfl(sig_stfl_name):
 #     import sys
 #     pytest.main(sys.argv)
 
-for sig in helpers.available_sig_stfls_by_name():
-    if sig == "LMS_SHA256_24_H5_W1":
-        pass
-    test_sig_stfl(sig)
+for sig in helpers.available_sigs_by_name():
+    print(sig)
+    print(helpers.is_sig_enabled_by_name(sig))

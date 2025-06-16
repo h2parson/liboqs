@@ -429,6 +429,9 @@ OQS_API bool OQS_SIG_supports_ctx_str(const char *alg_name);
 #ifdef OQS_ENABLE_SIG_ML_DSA
 #include <oqs/sig_ml_dsa.h>
 #endif /* OQS_ENABLE_SIG_ML_DSA */
+#ifdef OQS_ENABLE_SIG_SLH_DSA
+#include <oqs/sig_slh_dsa.h>
+#endif /* OQS_ENABLE_SIG_SLH_DSA */
 #ifdef OQS_ENABLE_SIG_FALCON
 #include <oqs/sig_falcon.h>
 #endif /* OQS_ENABLE_SIG_FALCON */
