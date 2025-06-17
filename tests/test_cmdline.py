@@ -45,10 +45,6 @@ def test_sig_stfl(sig_stfl_name):
             [helpers.path_to_executable('test_sig_stfl'), sig_stfl_name],
         )
 
-# if __name__ == "__main__":
-#     import sys
-#     pytest.main(sys.argv)
-
-for sig in helpers.available_sigs_by_name():
-    print(sig)
-    print(helpers.is_sig_enabled_by_name(sig))
+if __name__ == "__main__":
+    import sys
+    pytest.main(sys.argv)
