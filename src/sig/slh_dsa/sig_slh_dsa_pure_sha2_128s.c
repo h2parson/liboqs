@@ -3,6 +3,7 @@
 #include <stdlib.h>
 
 #include "sig_slh_dsa.h"
+#include "slh_dsa_wrappers.h"
 
 #if defined(OQS_ENABLE_SIG_slh_dsa_pure_sha2_128s)
 OQS_SIG *OQS_SIG_slh_dsa_pure_sha2_128s_new(void) {
@@ -32,27 +33,28 @@ OQS_SIG *OQS_SIG_slh_dsa_pure_sha2_128s_new(void) {
 	return sig;
 }
 
-extern int slh_dsa_pure_sha2_128s_keypair(uint8_t *pk, uint8_t *sk);
-extern int slh_dsa_pure_sha2_128s_signature(uint8_t *sig, size_t *siglen, const uint8_t *m, size_t mlen, const uint8_t *ctx, size_t ctxlen, const uint8_t *sk);
-extern int slh_dsa_pure_sha2_128s_verify(const uint8_t *sig, size_t siglen, const uint8_t *m, size_t mlen, const uint8_t *ctx, size_t ctxlen, const uint8_t *pk);
-
 OQS_API OQS_STATUS OQS_SIG_slh_dsa_pure_sha2_128s_keypair(uint8_t *public_key, uint8_t *secret_key) {
-	return (OQS_STATUS) slh_dsa_pure_sha2_128s_keypair(public_key, secret_key);
+	const slh_param_t *prm = &slh_dsa_sha2_128s;
+	return (OQS_STATUS) slh_keygen_wrapper(public_key, secret_key, prm);
 }
 
 OQS_API OQS_STATUS OQS_SIG_slh_dsa_pure_sha2_128s_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key) {
-	return (OQS_STATUS) slh_dsa_pure_sha2_128s_signature(signature, signature_len, message, message_len, NULL, 0, secret_key);
+	const slh_param_t *prm = &slh_dsa_sha2_128s;
+	return (OQS_STATUS) slh_sign_wrapper(signature, signature_len, message, message_len, secret_key, prm);
 }
 
 OQS_API OQS_STATUS OQS_SIG_slh_dsa_pure_sha2_128s_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
-	return (OQS_STATUS) slh_dsa_pure_sha2_128s_verify(signature, signature_len, message, message_len, NULL, 0, public_key);
+	const slh_param_t *prm = &slh_dsa_sha2_128s;
+	return (OQS_STATUS) slh_verify_wrapper(signature, signature_len, message, message_len, public_key, prm);
 }
 
 OQS_API OQS_STATUS OQS_SIG_slh_dsa_pure_sha2_128s_sign_with_ctx_str(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx_str, size_t ctx_str_len, const uint8_t *secret_key) {
-	return (OQS_STATUS) slh_dsa_pure_sha2_128s_signature(signature, signature_len, message, message_len, ctx_str, ctx_str_len, secret_key);
+	const slh_param_t *prm = &slh_dsa_sha2_128s;
+	return (OQS_STATUS) slh_sign_with_ctx_wrapper(signature, signature_len, message, message_len, ctx_str, ctx_str_len, secret_key, prm);
 }
 
 OQS_API OQS_STATUS OQS_SIG_slh_dsa_pure_sha2_128s_verify_with_ctx_str(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *ctx_str, size_t ctx_str_len, const uint8_t *public_key) {
-	return (OQS_STATUS) slh_dsa_pure_sha2_128s_verify(signature, signature_len, message, message_len, ctx_str, ctx_str_len, public_key);
+	const slh_param_t *prm = &slh_dsa_sha2_128s;
+	return (OQS_STATUS) slh_verify_with_ctx_wrapper(signature, signature_len, message, message_len, ctx_str, ctx_str_len, public_key, prm);
 }
 #endif

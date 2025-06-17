@@ -3,9 +3,9 @@
 set(_SLH_DSA_OBJS "")
 
 if(OQS_ENABLE_SIG_SLH_DSA)
-    message(STATUS "adding slh dsa!!!!!!!!!!!!!!!!!")
     add_library(slh_dsa_c OBJECT
-        sig_slh_dsa_pure_sha2_128s.c      # This file is in the current directory
+        sig_slh_dsa_pure_sha2_128s.c
+        slh_dsa_wrappers.c
         slh_dsa_c/sha2_256.c
         slh_dsa_c/sha2_512.c
         slh_dsa_c/sha3_api.c
