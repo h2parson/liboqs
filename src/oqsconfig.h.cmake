@@ -163,6 +163,8 @@
 
 #cmakedefine OQS_ENABLE_SIG_SLH_DSA 1
 #cmakedefine OQS_ENABLE_SIG_slh_dsa_pure_sha2_128s 1
+#cmakedefine OQS_ENABLE_SIG_slh_dsa_sha256_prehash_sha2_128s 1
+#cmakedefine OQS_ENABLE_SIG_slh_dsa_pure_shake_256f 1
 
 #cmakedefine OQS_ENABLE_SIG_FALCON 1
 #cmakedefine OQS_ENABLE_SIG_falcon_512 1

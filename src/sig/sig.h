@@ -46,6 +46,10 @@ extern "C" {
 #define OQS_SIG_alg_ml_dsa_87 "ML-DSA-87"
 /** Algorithm identifier for SLH-DSA-PURE-SHA2-128s */
 #define OQS_SIG_alg_slh_dsa_pure_sha2_128s "SLH-DSA-PURE-SHA2-128s"
+/** Algorithm identifier for SLH-DSA-SHA256-PREHASH-SHA2-128s */
+#define OQS_SIG_alg_slh_dsa_sha256_prehash_sha2_128s "SLH-DSA-SHA256-PREHASH-SHA2-128s"
+/** Algorithm identifier for SLH-DSA-PURE-SHAKE-256f */
+#define OQS_SIG_alg_slh_dsa_pure_shake_256f "SLH-DSA-PURE-SHAKE-256f"
 /** Algorithm identifier for Falcon-512 */
 #define OQS_SIG_alg_falcon_512 "Falcon-512"
 /** Algorithm identifier for Falcon-1024 */
@@ -175,7 +179,7 @@ extern "C" {
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_START
 
 /** Number of algorithm identifiers above. */
-#define OQS_SIG_algs_length 69
+#define OQS_SIG_algs_length 71
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_END
 
 /**
