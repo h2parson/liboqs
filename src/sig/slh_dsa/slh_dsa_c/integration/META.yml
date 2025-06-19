@@ -1,0 +1,63 @@
+paramSets:
+  -
+    name: 128s
+    pkSize: 32
+    skSize: 64
+    sigSize: 7856
+  -
+    name: 128f
+    pkSize: 32
+    skSize: 64
+    sigSize: 17088
+  -  
+    name: 192s
+    pkSize: 48
+    skSize: 96
+    sigSize: 16224
+  -  
+    name: 192f
+    pkSize: 48
+    skSize: 96
+    sigSize: 35664
+  -  
+    name: 256s
+    pkSize: 64
+    skSize: 128
+    sigSize: 29792
+  -  
+    name: 256f
+    pkSize: 64
+    skSize: 128
+    sigSize: 49856
+
+hashAlgs:
+  -
+    name: sha2
+  -
+    name: shake
+
+prehashHashAlgs:
+  -
+    name: sha2-224
+  -
+    name: sha2-256
+  -
+    name: sha2-384
+  -
+    name: sha2-512
+  -
+    name: sha2-512/224
+  -
+    name: sha2-512/256
+  -
+    name: sha3-224
+  -
+    name: sha3-256
+  -
+    name: sha3-384
+  -
+    name: sha3-512
+  -
+    name: shake-128
+  -
+    name: shake-256
