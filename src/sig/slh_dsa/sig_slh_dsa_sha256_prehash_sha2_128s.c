@@ -3,7 +3,10 @@
 #include <stdlib.h>
 
 #include "sig_slh_dsa.h"
-#include "slh_dsa_wrappers.h"
+#include "slh_dsa_c/slh_dsa.h"
+#include "slh_dsa_c/slh_prehash.h"
+#include <oqs/oqs.h>
+// #include "slh_dsa_wrappers.h"
 
 #if defined(OQS_ENABLE_SIG_slh_dsa_sha256_prehash_sha2_128s)
 OQS_SIG *OQS_SIG_slh_dsa_sha256_prehash_sha2_128s_new(void) {
@@ -33,36 +36,89 @@ OQS_SIG *OQS_SIG_slh_dsa_sha256_prehash_sha2_128s_new(void) {
 	return sig;
 }
 
+static int slh_randombytes(uint8_t *x, size_t xlen)
+{
+    OQS_randombytes(x,xlen);
+    return OQS_SUCCESS;
+}
+
 OQS_API OQS_STATUS OQS_SIG_slh_dsa_sha256_prehash_sha2_128s_keypair(uint8_t *public_key, uint8_t *secret_key) {
-	const slh_param_t *prm = &slh_dsa_sha2_128s;
-	return (OQS_STATUS) slh_keygen_wrapper(public_key, secret_key, prm);
+	
+	const slh_param_t *prm = &slh_dsa_shake_256f;
+	int (*rbg)(uint8_t *x, size_t xlen) = slh_randombytes;
+	return slh_keygen(secret_key,public_key, rbg, prm);
 }
 
-OQS_API OQS_STATUS OQS_SIG_slh_dsa_sha256_prehash_sha2_128s_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key) {
+OQS_API OQS_STATUS OQS_SIG_slh_dsa_sha256_prehash_sha2_128s_sign(uint8_t *signature, 
+	size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key) {
 	const slh_param_t *prm = &slh_dsa_sha2_128s;
+	
 	const char *ph = "SHA2-256";
-	return (OQS_STATUS) hash_slh_sign_wrapper(signature, signature_len, message, message_len,
-		 secret_key, prm, ph);
+	const uint8_t *ctx_str;
+    const size_t ctx_str_len = 0;
+    uint8_t addrnd[16];
+    OQS_randombytes(addrnd, 16);
+
+    *signature_len = hash_slh_sign(signature,message,message_len,ctx_str,
+		ctx_str_len,ph,secret_key,addrnd,prm);
+
+    if(*signature_len == 0)
+    {
+        return OQS_ERROR;
+    }
+    return OQS_SUCCESS;
 }
 
-OQS_API OQS_STATUS OQS_SIG_slh_dsa_sha256_prehash_sha2_128s_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
+OQS_API OQS_STATUS OQS_SIG_slh_dsa_sha256_prehash_sha2_128s_verify(const uint8_t *message, 
+	size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
+	
 	const slh_param_t *prm = &slh_dsa_sha2_128s;
 	const char *ph = "SHA2-256";
-	return (OQS_STATUS) hash_slh_verify_wrapper(signature, signature_len, message, message_len,
-		public_key, prm, ph);
+	const uint8_t *ctx_str;
+    const size_t ctx_str_len = 0;
+
+    int res = hash_slh_verify(message,message_len,signature,signature_len,
+		ctx_str,ctx_str_len,ph,public_key,prm);
+
+    if(res == 0)
+    {
+        return OQS_ERROR;
+    }
+    return OQS_SUCCESS;
 }
 
-OQS_API OQS_STATUS OQS_SIG_slh_dsa_sha256_prehash_sha2_128s_sign_with_ctx_str(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx_str, size_t ctx_str_len, const uint8_t *secret_key) {
+OQS_API OQS_STATUS OQS_SIG_slh_dsa_sha256_prehash_sha2_128s_sign_with_ctx_str(uint8_t *signature, 
+	size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *ctx_str, 
+	size_t ctx_str_len, const uint8_t *secret_key) {
+	
 	const slh_param_t *prm = &slh_dsa_sha2_128s;
 	const char *ph = "SHA2-256";
-	return (OQS_STATUS) hash_slh_sign_with_ctx_wrapper(signature, signature_len, message, message_len,
-		ctx_str, ctx_str_len, secret_key, prm, ph);
+	uint8_t addrnd[16];
+    OQS_randombytes(addrnd, 16);
+
+    *signature_len = hash_slh_sign(signature,message,message_len,ctx_str,
+		ctx_str_len,ph,secret_key,addrnd,prm);
+
+    if(*signature_len == 0)
+    {
+        return OQS_ERROR;
+    }
+    return OQS_SUCCESS;
 }
 
-OQS_API OQS_STATUS OQS_SIG_slh_dsa_sha256_prehash_sha2_128s_verify_with_ctx_str(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *ctx_str, size_t ctx_str_len, const uint8_t *public_key) {
+OQS_API OQS_STATUS OQS_SIG_slh_dsa_sha256_prehash_sha2_128s_verify_with_ctx_str(const uint8_t *message, 
+	size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *ctx_str, 
+	size_t ctx_str_len, const uint8_t *public_key) {
+	
 	const slh_param_t *prm = &slh_dsa_sha2_128s;
 	const char *ph = "SHA2-256";
-	return (OQS_STATUS) hash_slh_verify_with_ctx_wrapper(signature, signature_len, message, message_len,
-		ctx_str, ctx_str_len, public_key, prm, ph);
+	int res = hash_slh_verify(message,message_len,signature,signature_len,
+		ctx_str,ctx_str_len,ph,public_key,prm);
+
+   if(res == 0)
+    {
+        return OQS_ERROR;
+    }
+    return OQS_SUCCESS;
 }
 #endif

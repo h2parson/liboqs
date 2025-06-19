@@ -5,7 +5,7 @@
 #include <oqs/oqs.h>
 #include <stdint.h>
 
-int slh_randombytes(uint8_t *x, size_t xlen)
+static int slh_randombytes(uint8_t *x, size_t xlen)
 {
     OQS_randombytes(x,xlen);
     return OQS_SUCCESS;
