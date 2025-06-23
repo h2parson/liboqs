@@ -75,7 +75,7 @@ endif()
 
 if(OQS_ENABLE_SIG_SLH_DSA)
     add_subdirectory(sig/slh_dsa)
-    set(SIG__OBJS ${SIG_OBJS} ${SLH_DSA_OBJS})
+    set(SIG_OBJS ${SIG_OBJS} ${SLH_DSA_OBJS})
 endif()
 
 if(OQS_ENABLE_SIG_STFL_XMSS)

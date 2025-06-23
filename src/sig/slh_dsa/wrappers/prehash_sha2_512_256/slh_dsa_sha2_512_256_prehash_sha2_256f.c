@@ -7,9 +7,8 @@
 #include "../../slh_dsa_c/slh_prehash.h"
 #include <oqs/oqs.h>
 
-#if defined(OQS_ENABLE_SIG_slh_dsa_pure_sha2_256f)
 
-
+#if defined(OQS_ENABLE_SIG_slh_dsa_sha2_512_256_prehash_sha2_256f)
 OQS_SIG *OQS_SIG_slh_dsa_sha2_512_256_prehash_sha2_256f_new(void) {
 
 	OQS_SIG *sig = OQS_MEM_malloc(sizeof(OQS_SIG));
@@ -54,7 +53,7 @@ OQS_API OQS_STATUS OQS_SIG_slh_dsa_sha2_512_256_prehash_sha2_256f_sign(uint8_t *
 	size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key) {
 	const slh_param_t *prm = &slh_dsa_sha2_256f;
 	
-	const char *ph = "sha2_512_256";
+	const char *ph = "SHA2-512-256";
 	const uint8_t *ctx_str;
     const size_t ctx_str_len = 0;
     uint8_t addrnd[16];
@@ -74,7 +73,7 @@ OQS_API OQS_STATUS OQS_SIG_slh_dsa_sha2_512_256_prehash_sha2_256f_verify(const u
 	size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
 	
 	const slh_param_t *prm = &slh_dsa_sha2_256f;
-	const char *ph = "sha2_512_256";
+	const char *ph = "SHA2-512-256";
 	const uint8_t *ctx_str;
     const size_t ctx_str_len = 0;
 
@@ -93,7 +92,7 @@ OQS_API OQS_STATUS OQS_SIG_slh_dsa_sha2_512_256_prehash_sha2_256f_sign_with_ctx_
 	size_t ctx_str_len, const uint8_t *secret_key) {
 	
 	const slh_param_t *prm = &slh_dsa_sha2_256f;
-	const char *ph = "sha2_512_256";
+	const char *ph = "SHA2-512-256";
 	uint8_t addrnd[16];
     OQS_randombytes(addrnd, 16);
 
@@ -112,7 +111,7 @@ OQS_API OQS_STATUS OQS_SIG_slh_dsa_sha2_512_256_prehash_sha2_256f_verify_with_ct
 	size_t ctx_str_len, const uint8_t *public_key) {
 	
 	const slh_param_t *prm = &slh_dsa_sha2_256f;
-	const char *ph = "sha2_512_256";
+	const char *ph = "SHA2-512-256";
 	int res = hash_slh_verify(message,message_len,signature,signature_len,
 		ctx_str,ctx_str_len,ph,public_key,prm);
 

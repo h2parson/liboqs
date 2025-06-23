@@ -5,6 +5,7 @@ import requests
 import shutil
 import jinja2
 import glob
+import itertools
 
 def file_get_contents(filename, encoding=None):
     with open(filename, mode='r', encoding=encoding) as fh:
@@ -49,20 +50,28 @@ def section_bound(identifier, delimiter, text, side):
         res += len(searchString)
     return res
 
-def replacer(template_file, destination_file, identifier, variants):
+def fragment_replacer(template_file, destination_file, identifier, variants, destination_delimiter):
     #get section at identifier in template
     template = file_get_contents(template_file)
-    section = template[section_bound(identifier,'/////',template,'START'):section_bound(identifier,'/////',template,'END')]
+    section = template[section_bound(identifier,'#####',template,'START'):section_bound(identifier,'#####',template,'END')]
     
     #get preamble/postamble in destination file
     destination = file_get_contents(destination_file)
-    preamble = destination[:section_bound(identifier,'/////',destination,'START')]
-    postamble = destination[section_bound(identifier,'/////',destination,'END'):]
+    preamble = destination[:section_bound(identifier,destination_delimiter,destination,'START')]
+    postamble = destination[section_bound(identifier,destination_delimiter,destination,'END'):]
 
     #replace destination section with rendered template
     contents = preamble + jinja2.Template(section).render(variants) + postamble
-    with open(template_file, "w") as f:
+    with open(destination_file, "w") as f:
                 f.write(contents)
+
+def file_replacer(template_file, destination_file, variants, destination_delimiter):
+    #get fragment list in template file
+    template = file_get_contents(template_file)
+    list_string = template[section_bound('IDENTIFIER_LIST','#####',template,'START'):section_bound('IDENTIFIER_LIST','#####',template,'END')]
+    id_list = list_string.split()
+    for id in id_list:
+        fragment_replacer(template_file,destination_file,id,variants, destination_delimiter)
 
 def internal_code_gen():
     #clean up code
@@ -71,11 +80,11 @@ def internal_code_gen():
     #Start Header File and Setup
     header_template = file_get_contents(jinja_header_file)
     
-    header_section = header_template[section_bound('0','####', header_template,'START'):section_bound('0','####',header_template,'END')]
+    header_section = header_template[section_bound('0','#####', header_template,'START'):section_bound('0','#####',header_template,'END')]
     header_contents = jinja2.Template(header_section).render()
     
     src_template = file_get_contents(jinja_src_file)
-    header_section = header_template[section_bound('BODY','####',header_template,'START'):section_bound('BODY','####',header_template,'END')]
+    header_section = header_template[section_bound('BODY','#####',header_template,'START'):section_bound('BODY','#####',header_template,'END')]
     
     # Create Src Files for Pure variants
     for paramSet in meta['paramSets']:
@@ -125,7 +134,7 @@ def internal_code_gen():
                 header_contents += jinja2.Template(header_section).render(impl)
     
     #finish header file
-    header_section = header_template[section_bound('2','####',header_template,'START'):section_bound('2','####',header_template,'END')]
+    header_section = header_template[section_bound('2','#####',header_template,'START'):section_bound('2','#####',header_template,'END')]
     header_contents += jinja2.Template(header_section).render()
     header_file = "sig_slh_dsa.h"
     header_path = os.path.join(slh_dir, header_file)
@@ -148,8 +157,15 @@ def internal_cmake_gen():
     with open(cmake_path, "w") as f:
                 f.write(cmake_contents)
 
-
-
+def list_variants():
+    variants = []
+    #add pure variants
+    for hashAlg, paramSet in itertools.product(meta['hashAlgs'], meta['paramSets']):
+        variants.append('pure_' + hashAlg['name'] + '_' + paramSet['name'])
+    #add prehash variants
+    for prehashHashAlg, hashAlg, paramSet in itertools.product(meta['prehashHashAlgs'], meta['hashAlgs'], meta['paramSets']):
+        variants.append(prehashHashAlg['name'] + '_prehash_' + hashAlg['name'] + '_' + paramSet['name'])
+    return variants
 
 #initialize globals
 os.environ['LIBOQS_DIR'] = '/Users/h2parson/Documents/liboqs'
@@ -173,7 +189,7 @@ jinja_header_file = os.path.join(template_dir, 'slh_dsa_header_template.jinja')
 jinja_src_file = os.path.join(template_dir, 'slh_dsa_src_template.jinja')
 jinja_cmake_file = os.path.join(template_dir, 'slh_dsa_cmake_template.jinja')
 
-#start actual code
+#copy source code from upstream
 copy_from_commit()
 
 #load meta file
@@ -197,7 +213,24 @@ internal_code_gen()
 #generate internal cmake file
 internal_cmake_gen()
 
-#generate sig.c
+#Replace contents of other files using fragments
+#generate variant list
+variants = list_variants()
+
+#enumerate template file paths
+jinja_sig_c_file = os.path.join(template_dir,'slh_dsa_sig_c_template.jinja')
+jinja_sig_h_file = os.path.join(template_dir,'slh_dsa_sig_h_template.jinja')
+jinja_alg_support_file = os.path.join(template_dir,'slh_dsa_alg_support_template.jinja')
+jinja_oqsconfig_file = os.path.join(template_dir,'slh_dsa_oqsconfig_template.jinja')
+
+#enumerate destination file paths
 sig_c_path = os.path.join(os.environ['LIBOQS_DIR'],'src','sig','sig.c')
+sig_h_path = os.path.join(os.environ['LIBOQS_DIR'],'src','sig','sig.h')
+alg_support_path = os.path.join(os.environ['LIBOQS_DIR'],'.CMake','alg_support.cmake')
+oqsconfig_path = os.path.join(os.environ['LIBOQS_DIR'],'src','oqsconfig.h.cmake')
 
-
+#replace file contents
+file_replacer(jinja_sig_c_file, sig_c_path, {'variants': variants},'/////')
+file_replacer(jinja_sig_h_file, sig_h_path, {'variants': variants},'/////')
+file_replacer(jinja_alg_support_file, alg_support_path, {'variants': variants},'#####')
+file_replacer(jinja_oqsconfig_file, oqsconfig_path, {'variants': variants},'/////')

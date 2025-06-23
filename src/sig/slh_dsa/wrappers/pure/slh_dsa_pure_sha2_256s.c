@@ -7,8 +7,8 @@
 #include "../../slh_dsa_c/slh_prehash.h"
 #include <oqs/oqs.h>
 
-#if defined(OQS_ENABLE_SIG_slh_dsa_pure_sha2_256s)
 
+#if defined(OQS_ENABLE_SIG_slh_dsa_pure_sha2_256s)
 OQS_SIG *OQS_SIG_slh_dsa_pure_sha2_256s_new(void) {
 
 	OQS_SIG *sig = OQS_MEM_malloc(sizeof(OQS_SIG));
