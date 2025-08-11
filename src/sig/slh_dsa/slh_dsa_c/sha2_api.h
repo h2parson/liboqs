@@ -22,8 +22,8 @@ extern "C"
   /* SHA2-224: Compute 28-byte hash to "md" from "m" which has "m_sz" bytes. */
   void sha2_224(uint8_t *md, const void *m, size_t m_sz);
 
-  /* SHA2-256: Compute 32-byte hash to "md" from "m" which has "m_sz" bytes. */
-  void sha2_256(uint8_t *md, const void *m, size_t m_sz);
+  // /* SHA2-256: Compute 32-byte hash to "md" from "m" which has "m_sz" bytes. */
+  // void sha2_256(uint8_t *md, const void *m, size_t m_sz);
 
   /* SHA2-384: Compute 48-byte hash to "md" from "m" which has "m_sz" bytes. */
   void sha2_384(uint8_t *md, const void *m, size_t m_sz);
