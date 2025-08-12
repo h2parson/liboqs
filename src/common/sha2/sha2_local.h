@@ -71,6 +71,9 @@ void oqs_sha2_sha512_inc_blocks_c(sha512ctx *state, const uint8_t *in, size_t in
 void oqs_sha2_sha512_inc_finalize_c(uint8_t *out, sha512ctx *state, const uint8_t *in, size_t inlen);
 void oqs_sha2_sha512_inc_ctx_release_c(sha512ctx *state);
 
+void oqs_sha2_sha512_224_inc_init_c(sha512ctx *state);
+void oqs_sha2_sha512_256_inc_init_c(sha512ctx *state);
+
 // ARMv8 Crypto Extension  functions
 void oqs_sha2_sha224_inc_blocks_armv8(sha224ctx *state, const uint8_t *in, size_t inblocks);
 void oqs_sha2_sha224_armv8(uint8_t *out, const uint8_t *in, size_t inlen);
@@ -88,6 +91,8 @@ void oqs_sha2_sha224_c(uint8_t *out, const uint8_t *in, size_t inlen);
 void oqs_sha2_sha256_c(uint8_t *out, const uint8_t *in, size_t inlen);
 void oqs_sha2_sha384_c(uint8_t *out, const uint8_t *in, size_t inlen);
 void oqs_sha2_sha512_c(uint8_t *out, const uint8_t *in, size_t inlen);
+void oqs_sha2_sha512_224_c(uint8_t *out, const uint8_t *in, size_t inlen);
+void oqs_sha2_sha512_256_c(uint8_t *out, const uint8_t *in, size_t inlen);
 
 extern struct OQS_SHA2_callbacks sha2_default_callbacks;
 
