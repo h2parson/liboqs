@@ -89,6 +89,7 @@ add_library(common OBJECT ${AES_IMPL} aes/aes.c
                           common.c
                           pqclean_shims/fips202.c
                           pqclean_shims/fips202x4.c
+                          slhdsa_shims/sha2.c
                           ${LIBJADE_RANDOMBYTES}
                           rand/rand.c)
 

@@ -42,33 +42,33 @@ extern "C"
 
   /* === incremental interface === */
 
-  typedef struct
-  {
-    uint32_t s[8 + 24];
-    size_t i, len;
-  } sha2_256_t;
+  // typedef struct
+  // {
+  //   uint32_t s[8 + 24];
+  //   size_t i, len;
+  // } sha2_256_t;
 
-  typedef sha2_256_t sha2_224_t;
+  // typedef sha2_256_t sha2_224_t;
 
-  typedef struct
-  {
-    uint64_t s[8 + 24];
-    size_t i, len;
-  } sha2_512_t;
+  // typedef struct
+  // {
+  //   uint64_t s[8 + 24];
+  //   size_t i, len;
+  // } sha2_512_t;
 
-  typedef sha2_512_t sha2_384_t;
+  // typedef sha2_512_t sha2_384_t;
 
   /* shaNNN_init(var): Initialize context for hashing. */
-  void sha2_256_init(sha2_256_t *sha)
-  __contract__(
-    requires(memory_no_alias(sha, sizeof(sha2_256_t)))
-    assigns(object_whole(sha))
-  );
-  void sha2_224_init(sha2_256_t *sha);
-  void sha2_512_init(sha2_512_t *sha);
-  void sha2_384_init(sha2_512_t *sha);
-  void sha2_512_224_init(sha2_512_t *sha);
-  void sha2_512_256_init(sha2_512_t *sha);
+  // void sha2_224_init(sha2_256_t *sha);
+  // void sha2_256_init(sha2_256_t *sha)
+  // __contract__(
+  //   requires(memory_no_alias(sha, sizeof(sha2_256_t)))
+  //   assigns(object_whole(sha))
+  // );
+  // void sha2_384_init(sha2_512_t *sha);
+  // void sha2_512_init(sha2_512_t *sha);
+  // void sha2_512_224_init(sha2_512_t *sha);
+  // void sha2_512_256_init(sha2_512_t *sha);
 
   /* shaNNN_update(var, m, m_sz): Include "m" of "m_sz" bytes in hash. */
   void sha2_256_update(sha2_256_t *sha, const uint8_t *m, size_t m_sz);

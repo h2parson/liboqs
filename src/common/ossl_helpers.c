@@ -27,8 +27,8 @@ static void fetch_ossl_objects(void) {
 	sha256_ptr = OSSL_FUNC(EVP_MD_fetch)(NULL, "SHA256", NULL);
 	sha384_ptr = OSSL_FUNC(EVP_MD_fetch)(NULL, "SHA384", NULL);
 	sha512_ptr = OSSL_FUNC(EVP_MD_fetch)(NULL, "SHA512", NULL);
-	sha512_224_ptr = OSSL_FUNC(EVP_MD_fetch)(NULL, "SHA512_224", NULL);
-	sha512_256_ptr = OSSL_FUNC(EVP_MD_fetch)(NULL, "SHA512_256", NULL);
+	sha512_224_ptr = OSSL_FUNC(EVP_MD_fetch)(NULL, "SHA512-224", NULL);
+	sha512_256_ptr = OSSL_FUNC(EVP_MD_fetch)(NULL, "SHA512-256", NULL);
 
 	sha3_256_ptr = OSSL_FUNC(EVP_MD_fetch)(NULL, "SHA3-256", NULL);
 	sha3_384_ptr = OSSL_FUNC(EVP_MD_fetch)(NULL, "SHA3-384", NULL);
